@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,18 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/url/shorten', [UrlController::class, 'shorten'])->name('url.shorten');
+Route::get('/url/{shortUrl}', [UrlController::class, 'redirect'])->name('url.redirect');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/url/delete/{id}', [UrlController::class, 'delete'])->name('url.delete');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
