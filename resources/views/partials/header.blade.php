@@ -2,7 +2,6 @@
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
         <h1 class="text-3xl font-extrabold text-indigo-600">URL Shortener</h1>
 
-        <!-- Hamburger Icon for Mobile -->
         <button id="menu-toggle" class="lg:hidden focus:outline-none" onclick="toggleMenu()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
