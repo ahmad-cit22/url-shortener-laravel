@@ -16,7 +16,6 @@ class UrlController extends Controller
 
     public function shorten(Request $request, UrlShortenerService $service)
     {
-
         session()->forget('shortUrl');
 
         $request->validate([
@@ -59,5 +58,53 @@ class UrlController extends Controller
         $url->delete();
 
         return redirect()->route('dashboard')->with('success', 'URL deleted successfully!');
+    }
+
+    // API methods
+    public function shortenApi(Request $request, UrlShortenerService $service)
+    {
+        $request->validate([
+            'original_url' => 'required|url',
+        ]);
+
+        $result = $service->shortenUrl($request->input('original_url'));
+
+        $url = Url::create([
+            'original_url' => $result['original_url'],
+            'short_url' => $result['short_url'],
+        ]);
+
+        return response()->json([
+            'short_url' => route('url.redirect', $url->short_url),
+        ]);
+    }
+
+    public function getOriginalUrlApi($shortUrl)
+    {
+        $url = Url::where('short_url', $shortUrl)->firstOrFail();
+
+        return response()->json([
+            'original_url' => $url->original_url,
+        ]);
+    }
+
+    public function deleteApi($id)
+    {
+        $url = Url::where('id', $id)->first();
+
+        if (!$url) {
+            return response()->json(['error' => 'URL not found'], 404);
+        }
+
+        $url->delete();
+
+        return response()->json(['message' => 'URL deleted successfully']);
+    }
+
+    public function listUrlsApi()
+    {
+        $urls = Url::all();
+
+        return response()->json($urls);
     }
 }

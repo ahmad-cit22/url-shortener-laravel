@@ -90,4 +90,13 @@ class UrlShorteningTest extends TestCase
 
         $response->assertRedirect($url->original_url);
     }
+
+    /** @test */
+    public function test_invalid_url_cannot_be_shortened()
+    {
+        $this->post('/url/shorten', [
+            'original_url' => 'invalid-url',
+        ])
+            ->assertSessionHasErrors();
+    }
 }
