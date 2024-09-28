@@ -1,9 +1,13 @@
 @extends('layouts.master')
 
+@section('title', 'Dashboard')
+
 @section('content')
     <main class="flex-grow flex flex-col items-center justify-center px-4">
         <section class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Manage Your URLs</h2>
+
+            <!-- url table -->
             <table class="w-full bg-white rounded-lg shadow-md">
                 <thead>
                     <tr class="bg-indigo-600 text-white">
@@ -70,30 +74,28 @@
 
 @push('custom-js')
     <script>
-        let currentUrlId = null; // To keep track of the URL being deleted
+        let currentUrlId = null;
 
         function confirmDelete(urlId) {
-            currentUrlId = urlId; // Set the current URL ID
+            currentUrlId = urlId;
             const modal = document.getElementById('deleteModal');
-            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Add CSS transition property
-            modal.classList.remove('hidden'); // Show the modal
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            modal.classList.remove('hidden');
             setTimeout(() => {
-                modal.classList.remove('opacity-0', 'scale-75'); // Remove opacity and scale classes
-            }, 10); // Short delay to ensure the transition takes effect
+                modal.classList.remove('opacity-0', 'scale-75');
+            }, 10);
         }
 
         function closeDeleteModal() {
             const modal = document.getElementById('deleteModal');
-            modal.classList.add('opacity-0', 'scale-75'); // Add opacity and scale classes for hiding effect
+            modal.classList.add('opacity-0', 'scale-75');
             setTimeout(() => {
-                modal.classList.add('hidden'); // Hide the modal after the transition
-            }, 300); // Match this duration with the CSS transition duration
+                modal.classList.add('hidden');
+            }, 300);
 
-            // Add CSS transition property
             modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         }
 
-        // Add event listener to the confirm delete button
         document.getElementById('confirmDelete').onclick = function() {
             var form = document.createElement('form');
             form.action = "{{ route('url.delete', '') }}/" + currentUrlId;
@@ -104,7 +106,7 @@
         `;
             document.body.appendChild(form);
             form.submit();
-            closeDeleteModal(); // Hide modal after submission
+            closeDeleteModal();
         };
 
 

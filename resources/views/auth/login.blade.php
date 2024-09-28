@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', 'Login')
+
 @section('content')
     <main class="flex-grow flex flex-col items-center justify-center px-4">
         <section class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
