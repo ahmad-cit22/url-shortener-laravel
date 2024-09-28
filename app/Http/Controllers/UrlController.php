@@ -50,10 +50,14 @@ class UrlController extends Controller
 
     public function delete($id)
     {
-        $url = Url::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $url = Url::where('id', $id)->where('user_id', auth()->id())->first();
+
+        if (!$url) {
+            return redirect()->back()->with('error', 'Unauthorized action!');
+        }
 
         $url->delete();
 
-        return redirect()->back()->with('success', 'URL deleted successfully!');
+        return redirect()->route('dashboard')->with('success', 'URL deleted successfully!');
     }
 }
