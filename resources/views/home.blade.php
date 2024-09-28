@@ -15,7 +15,7 @@
                     <input type="url" id="original-url" name="original_url" placeholder="Enter your long URL here"
                         class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         required>
-                    <small class="absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400">e.g.
+                    <small class="absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400 hidden lg:inline">e.g.
                         https://example.com</small>
                 </div>
                 <button type="submit"
