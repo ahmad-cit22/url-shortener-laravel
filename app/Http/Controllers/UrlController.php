@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use App\Models\Url;
+use App\Services\UrlShortenerService;
 use Illuminate\Http\Request;
 
 class UrlController extends Controller
@@ -13,7 +14,7 @@ class UrlController extends Controller
         return view('urls.create');
     }
 
-    public function shorten(Request $request)
+    public function shorten(Request $request, UrlShortenerService $service)
     {
 
         session()->forget('shortUrl');
@@ -22,21 +23,17 @@ class UrlController extends Controller
             'original_url' => 'required|url',
         ]);
 
-        $shortUrl = Str::random(6);
-
-        while (Url::where('short_url', $shortUrl)->exists()) {
-            $shortUrl = Str::random(6);
-        }
+        $result = $service->shortenUrl($request->input('original_url'));
 
         Url::create([
-            'user_id' => auth()->id() ? auth()->id() : null,
-            'original_url' => $request->input('original_url'),
-            'short_url' => $shortUrl,
+            'user_id' => auth()->id(),
+            'original_url' => $result['original_url'],
+            'short_url' => $result['short_url'],
         ]);
 
         session([
-            'shortUrl' => $shortUrl,
-            'originalUrl' => $request->input('original_url'),
+            'shortUrl' => $result['short_url'],
+            'originalUrl' => $result['original_url'],
         ]);
 
         return redirect()->route('home')->with('success', 'URL shortened successfully!');

@@ -20,12 +20,10 @@
                                 <a href="{{ route('url.redirect', $url->short_url) }}"
                                     class="text-indigo-600 hover:underline">
                                     {{ route('url.redirect', $url->short_url) }}</a>
-
                                 <button id="copyBtn-{{ $url->id }}"
                                     onclick="copyToClipboardDashboard('{{ route('url.redirect', $url->short_url) }}', {{ $url->id }})"
                                     class="bg-indigo-500 text-white py-1 px-2 text-sm rounded-md hover:bg-indigo-600 flex items-center space-x-1"
                                     title="Copy">
-
                                     <svg id="copyIcon-{{ $url->id }}" xmlns="http://www.w3.org/2000/svg"
                                         class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                         stroke-width="2">
@@ -53,43 +51,80 @@
     </main>
 @endsection
 
+@push('modals')
+    <!-- delete modal -->
+    <div id="deleteModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out opacity-0 transform scale-75">
+        <div class="bg-white rounded-lg shadow-lg w-1/3 p-6 transition-transform duration-300 ease-in-out">
+            <h2 class="text-lg font-bold mb-4">Confirm Deletion</h2>
+            <p>Are you sure you want to delete this URL?</p>
+            <div class="mt-4 flex justify-end">
+                <button id="cancelDelete" class="text-indigo-600 hover:text-indigo-500 px-4 py-2 rounded-md mr-2"
+                    onclick="closeDeleteModal()">Cancel</button>
+                <button id="confirmDelete" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-md"
+                    onclick="">Delete</button>
+            </div>
+        </div>
+    </div>
+@endpush
+
 @push('custom-js')
     <script>
+        let currentUrlId = null; // To keep track of the URL being deleted
+
+        function confirmDelete(urlId) {
+            currentUrlId = urlId; // Set the current URL ID
+            const modal = document.getElementById('deleteModal');
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; // Add CSS transition property
+            modal.classList.remove('hidden'); // Show the modal
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'scale-75'); // Remove opacity and scale classes
+            }, 10); // Short delay to ensure the transition takes effect
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('opacity-0', 'scale-75'); // Add opacity and scale classes for hiding effect
+            setTimeout(() => {
+                modal.classList.add('hidden'); // Hide the modal after the transition
+            }, 300); // Match this duration with the CSS transition duration
+
+            // Add CSS transition property
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        }
+
+        // Add event listener to the confirm delete button
+        document.getElementById('confirmDelete').onclick = function() {
+            var form = document.createElement('form');
+            form.action = "{{ route('url.delete', '') }}/" + currentUrlId;
+            form.method = "POST";
+            form.innerHTML = `
+        @csrf
+        @method('DELETE')
+        `;
+            document.body.appendChild(form);
+            form.submit();
+            closeDeleteModal(); // Hide modal after submission
+        };
+
+
         function copyToClipboardDashboard(text, urlId) {
             navigator.clipboard.writeText(text).then(function() {
-
                 document.getElementById('copyIcon-' + urlId).outerHTML = `
-        <svg id="checkIcon-${urlId}" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-        </svg>`;
+                <svg id="checkIcon-${urlId}" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>`;
 
                 setTimeout(() => {
                     document.getElementById('checkIcon-' + urlId).outerHTML = `
-            <svg id="copyIcon-${urlId}" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16h8M8 12h8m-6 4h6M6 20h12M8 8h8M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
-            </svg>`;
+                    <svg id="copyIcon-${urlId}" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 16h8M8 12h8m-6 4h6M6 20h12M8 8h8M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                    </svg>`;
                 }, 2000);
-
                 showAlert();
             }, function(err) {
                 console.error('Failed to copy text: ', err);
             });
-        }
-
-        function confirmDelete(urlId) {
-            var confirmation = confirm("Are you sure you want to delete this URL?");
-
-            if (confirmation) {
-                var form = document.createElement('form');
-                form.action = "{{ route('url.delete', '') }}/" + urlId;
-                form.method = "POST";
-                form.innerHTML = `
-                    @csrf
-                    @method('DELETE')
-                `;
-                document.body.appendChild(form);
-                form.submit();
-            }
         }
     </script>
 @endpush

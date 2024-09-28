@@ -20,6 +20,9 @@
     <!-- Main Section -->
     @yield('content')
 
+    <!-- Modals -->
+    @stack('modals')
+
     <!-- Footer -->
     @include('partials.footer')
 
