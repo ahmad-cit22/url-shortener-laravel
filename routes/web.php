@@ -22,7 +22,7 @@ Route::post('/url/shorten', [UrlController::class, 'shorten'])->name('url.shorte
 Route::get('/url/{shortUrl}', [UrlController::class, 'redirect'])->name('url.redirect');
 
 Route::middleware('auth')->group(function () {
-    Route::post('/url/delete/{id}', [UrlController::class, 'delete'])->name('url.delete');
+    Route::delete('/url/delete/{id}', [UrlController::class, 'delete'])->name('url.delete');
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 });
 

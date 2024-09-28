@@ -1,3 +1,23 @@
+<div id="alert"
+    class="hidden fixed top-4 right-4 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg flex items-center">
+    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    Shortened URL copied to clipboard!
+</div>
+
+@if (session()->has('status'))
+    <div class="bg-green-200 px-6 py-4 my-4 rounded-md text-lg flex justify-center items-center mx-auto max-w-lg">
+        <svg viewBox="0 0 24 24" class="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+            <path fill="currentColor"
+                d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.289a1.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l4.076,3.261,6.227-8.451A1,1,0,1,1,18.927,8.2Z">
+            </path>
+        </svg>
+        <span class="text-green-800">{{ session('status') }}</span>
+    </div>
+@endif
+
 @if (session()->has('success'))
     <div class="bg-green-200 px-6 py-4 my-4 rounded-md text-lg flex justify-center items-center mx-auto max-w-lg">
         <svg viewBox="0 0 24 24" class="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">

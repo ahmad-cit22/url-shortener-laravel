@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <main class="flex-grow flex flex-col items-center justify-center px-4">
+    <main class="flex-grow flex flex-col items-center justify-center px-4 mt-5">
 
         <!-- Form Section -->
         <section class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg mb-12">
@@ -26,15 +26,39 @@
 
             <!-- Shortened URL Section -->
             @if (session('shortUrl'))
-                <div id="shortened-url" class="mt-6 bg-indigo-50 p-4 rounded-lg">
-                    <p class="text-center text-gray-700">Your shortened URL:</p>
-                    <a href="{{ route('url.redirect', session('shortUrl')) }}"
-                        class="text-indigo-600 font-medium hover:underline block text-center">
-                        {{ session('shortUrl') }}
-                    </a>
+                <div id="shortened-url" class="mt-8 p-6 bg-indigo-50 shadow-md rounded-lg">
+                    <div class="text-center">
+                        <p class="text-gray-600 font-semibold">Original URL:</p>
+                        <a href="{{ session('originalUrl') }}"
+                            class="text-indigo-500 font-medium hover:underline break-all">
+                            {{ session('originalUrl') }}
+                        </a>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-600 font-semibold">Your Shortened URL:</p>
+                        <div class="inline-flex items-center space-x-2 justify-center">
+                            <a href="{{ route('url.redirect', session('shortUrl')) }}"
+                                class="text-indigo-500 font-medium hover:underline break-all">
+                                {{ route('url.redirect', session('shortUrl')) }}
+                            </a>
+
+                            <button id="copyBtn"
+                                onclick="copyToClipboard('{{ route('url.redirect', session('shortUrl')) }}')"
+                                class="bg-indigo-500 text-white py-1 px-2 text-sm rounded-md hover:bg-indigo-600 flex items-center space-x-1">
+
+                                <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8 16h8M8 12h8m-6 4h6M6 20h12M8 8h8M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                                </svg>
+                                <span id="copyText">Copy</span>
+                            </button>
+
+                        </div>
+                    </div>
                 </div>
             @endif
-
             @if ($errors->any())
                 <div class="mt-6 bg-red-50 p-4 rounded-lg">
                     <ul class="list-none">
@@ -62,3 +86,30 @@
         </section>
     </main>
 @endsection
+
+@push('custom-js')
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+
+                document.getElementById('copyIcon').outerHTML = `
+        <svg id="checkIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>`;
+                document.getElementById('copyText').innerText = "Copied";
+
+                setTimeout(() => {
+                    document.getElementById('checkIcon').outerHTML = `
+            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16h8M8 12h8m-6 4h6M6 20h12M8 8h8M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
+            </svg>`;
+                    document.getElementById('copyText').innerText = "Copy";
+                }, 2000);
+
+                showAlert();
+            }, function(err) {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+    </script>
+@endpush

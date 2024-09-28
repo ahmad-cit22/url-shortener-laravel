@@ -35,7 +35,8 @@ class UrlController extends Controller
         ]);
 
         session([
-            'shortUrl' => $shortUrl
+            'shortUrl' => $shortUrl,
+            'originalUrl' => $request->input('original_url'),
         ]);
 
         return redirect()->route('home')->with('success', 'URL shortened successfully!');
@@ -50,8 +51,12 @@ class UrlController extends Controller
         return redirect($url->original_url);
     }
 
-    public function delete(Url $url)
+    public function delete($id)
     {
+        $url = Url::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
         $url->delete();
+
+        return redirect()->back()->with('success', 'URL deleted successfully!');
     }
 }
