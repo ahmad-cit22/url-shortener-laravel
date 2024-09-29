@@ -15,8 +15,6 @@
                     <input type="url" id="original-url" name="original_url" placeholder="Enter your long URL here"
                         class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         required>
-                    <small class="absolute top-1/2 transform -translate-y-1/2 right-4 text-gray-400 hidden lg:inline">e.g.
-                        https://example.com</small>
                 </div>
                 <button type="submit"
                     class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-200">
@@ -26,7 +24,8 @@
 
             <!-- Shortened URL section -->
             @if (session('shortUrl'))
-                <div id="shortened-url" class="mt-8 p-6 bg-indigo-50 shadow-md rounded-lg">
+                <div id="shortened-url"
+                    class="mt-8 p-5 bg-indigo-50 shadow-md rounded-lg flex flex-col justify-center items-center">
                     <div class="text-center overflow-hidden">
                         <p class="text-gray-600 font-semibold">Original URL:</p>
                         <a href="{{ session('originalUrl') }}"
@@ -44,18 +43,18 @@
                                 {{ route('url.redirect', session('shortUrl')) }}
                             </a>
 
-                            <button id="copyBtn"
-                                onclick="copyToClipboard('{{ route('url.redirect', session('shortUrl')) }}')"
-                                class="bg-indigo-500 text-white py-1 px-2 text-sm rounded-md hover:bg-indigo-600 flex items-center space-x-1">
 
-                                <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8 16h8M8 12h8m-6 4h6M6 20h12M8 8h8M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
-                                </svg>
-                                <span id="copyText">Copy</span>
-                            </button>
                         </div>
+                        <button id="copyBtn" onclick="copyToClipboard('{{ route('url.redirect', session('shortUrl')) }}')"
+                            class="bg-indigo-500 text-white py-1 px-2 text-sm rounded-md hover:bg-indigo-600 flex items-center space-x-1 mx-auto mt-2">
+
+                            <svg id="copyIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 16h8M8 12h8m-6 4h6M6 20h12M8 8h8M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                            </svg>
+                            <span id="copyText">Copy</span>
+                        </button>
                     </div>
                 </div>
             @endif

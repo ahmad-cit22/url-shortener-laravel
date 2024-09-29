@@ -24,6 +24,10 @@ class UrlController extends Controller
 
         $result = $service->shortenUrl($request->input('original_url'));
 
+        if ($result['error']) {
+            return redirect()->back()->with('error', $result['error']);
+        }
+
         Url::create([
             'user_id' => auth()->id(),
             'original_url' => $result['original_url'],

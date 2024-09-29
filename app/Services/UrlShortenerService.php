@@ -10,7 +10,9 @@ class UrlShortenerService
     public function shortenUrl($originalUrl)
     {
         if (!filter_var($originalUrl, FILTER_VALIDATE_URL)) {
-            return redirect()->back()->with('error', 'Invalid URL!');
+            return [
+                'error' => 'Invalid URL'
+            ];
         }
 
         $shortUrl = Str::random(6);
@@ -22,6 +24,7 @@ class UrlShortenerService
         return [
             'original_url' => $originalUrl,
             'short_url' => $shortUrl,
+            'error' => null
         ];
     }
 }

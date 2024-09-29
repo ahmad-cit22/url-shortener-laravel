@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('original_url');
+            $table->longText('original_url');
             $table->string('short_url')->unique();
             $table->integer('clicks')->default(0);
             $table->timestamps();
