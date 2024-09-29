@@ -1,5 +1,7 @@
 # URL Shortener
 
+![APP Screenshot](images/project-screenshot.png)
+
 A simple URL shortener application built with Laravel and Modern JavaScript. It allows users to shorten long URLs and manage them, including viewing details, tracking click counts, editing, and deletion.
 
 ---
