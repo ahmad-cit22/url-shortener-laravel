@@ -108,7 +108,7 @@ After the installation, follow these steps to use the application:
 
 This project includes a suite of automated tests to ensure the application functions correctly. You can run the tests using the following command:
 
-    ```bash
+```bash
     php artisan test
 
 
