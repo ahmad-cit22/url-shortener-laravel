@@ -11,6 +11,7 @@ A simple URL shortener application built with Laravel and Modern JavaScript. It 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
 
