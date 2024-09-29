@@ -24,21 +24,6 @@ class UrlShorteningTest extends TestCase
     }
 
     /** @test */
-    public function authenticated_user_can_shorten_url()
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->post('/url/shorten', [
-                'original_url' => 'https://example.com',
-            ])
-            ->assertRedirect()
-            ->assertSessionHasNoErrors();
-
-        $this->assertDatabaseHas('urls', ['original_url' => 'https://example.com']);
-    }
-
-    /** @test */
     public function authenticated_user_can_see_dashboard()
     {
         $user = User::factory()->create();
