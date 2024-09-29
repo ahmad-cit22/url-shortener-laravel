@@ -4,7 +4,7 @@
 
 @section('content')
     <main class="flex-grow flex flex-col items-center justify-center px-4">
-        <section class="bg-white rounded-lg shadow-lg p-8 w-full max-w-4xl">
+        <section class="bg-white rounded-lg shadow-lg p-8 w-full max-w-5xl">
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Manage Your URLs</h2>
 
             <!-- URL table -->
@@ -37,7 +37,10 @@
                                         </svg>
                                     </button>
                                 </td>
-                                <td class="p-4 truncate" style="max-width: 250px !important;">{{ $url->original_url }}</td>
+                                <td class="p-4 truncate text-indigo-600 hover:underline"
+                                    style="max-width: 250px !important;">
+                                    <a href="{{ $url->original_url }}" target="_blank">{{ $url->original_url }}</a>
+                                </td>
                                 <td class="p-4">{{ $url->clicks }}</td>
                                 <td class="p-4 flex items-center space-x-1">
                                     <button
@@ -246,7 +249,7 @@
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="${data.original_url}">
-                                ${data.original_url.length > 30 ? data.original_url.slice(0, 30) + '...' : data.original_url}
+                                ${data.original_url.length > 35 ? data.original_url.slice(0, 35) + '...' : data.original_url}
                             </a>
                         </p>
                         <p class="text-gray-600 mb-2">
