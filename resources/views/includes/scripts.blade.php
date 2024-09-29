@@ -8,8 +8,6 @@
             alertBox.classList.add('hidden');
         }, 2000);
     }
-
-    
 </script>
 
 @stack('custom-js')

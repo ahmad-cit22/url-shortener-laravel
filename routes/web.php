@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/url/shorten', [UrlController::class, 'shorten'])->name('url.shorten');
 Route::get('/url/{shortUrl}', [UrlController::class, 'redirect'])->name('url.redirect');
+Route::get('/url/show/{id}', [UrlController::class, 'show'])->name('url.show');
+Route::post('/url/update', [UrlController::class, 'update'])->name('url.update');
 
 Route::middleware('auth')->group(function () {
     Route::delete('/url/delete/{id}', [UrlController::class, 'delete'])->name('url.delete');

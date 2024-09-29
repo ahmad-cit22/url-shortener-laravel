@@ -27,11 +27,12 @@
             <!-- Shortened URL section -->
             @if (session('shortUrl'))
                 <div id="shortened-url" class="mt-8 p-6 bg-indigo-50 shadow-md rounded-lg">
-                    <div class="text-center">
+                    <div class="text-center overflow-hidden">
                         <p class="text-gray-600 font-semibold">Original URL:</p>
                         <a href="{{ session('originalUrl') }}"
-                            class="text-indigo-500 font-medium hover:underline break-all">
-                            {{ session('originalUrl') }}
+                            class="text-indigo-500 font-medium hover:underline break-all truncate max-w-xs"
+                            title="{{ session('originalUrl') }}">
+                            {{ Str::limit(session('originalUrl'), 37) }}
                         </a>
                     </div>
 

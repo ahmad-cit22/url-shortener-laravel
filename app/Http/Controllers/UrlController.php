@@ -47,6 +47,32 @@ class UrlController extends Controller
         return redirect($url->original_url);
     }
 
+    public function show($id)
+    {
+        $url = Url::where('id', $id)->where('user_id', auth()->id())->first();
+
+        if (!$url) {
+            return response()->json(['error' => 'URL not found or unauthorized!'], 404);
+        }
+
+        return response()->json($url);
+    }
+
+    public function update(Request $request)
+    {
+        $url = Url::where('id', $request->input('id'))->where('user_id', auth()->id())->first();
+
+        if (!$url) {
+            return redirect()->back()->with('error', 'URL not found or unauthorized!');
+        }
+
+        $url->update([
+            'original_url' => $request->input('original_url')
+        ]);
+
+        return redirect()->back()->with('success', 'URL updated successfully!');
+    }
+
     public function delete($id)
     {
         $url = Url::where('id', $id)->where('user_id', auth()->id())->first();
@@ -86,6 +112,21 @@ class UrlController extends Controller
         return response()->json([
             'original_url' => $url->original_url,
         ]);
+    }
+
+    public function updateApi(Request $request)
+    {
+        $url = Url::where('id', $request->input('id'))->first();
+
+        if (!$url) {
+            return response()->json(['error' => 'URL not found or unauthorized!'], 404);
+        }
+
+        $url->update([
+            'original_url' => $request->input('original_url')
+        ]);
+
+        return response()->json(['message' => 'URL updated successfully']);
     }
 
     public function deleteApi($id)

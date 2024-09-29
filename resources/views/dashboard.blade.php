@@ -37,12 +37,38 @@
                                         </svg>
                                     </button>
                                 </td>
-                                <td class="p-4 truncate max-w-xs">{{ $url->original_url }}</td>
+                                <td class="p-4 truncate" style="max-width: 250px !important;">{{ $url->original_url }}</td>
                                 <td class="p-4">{{ $url->clicks }}</td>
-                                <td class="p-4">
+                                <td class="p-4 flex items-center space-x-1">
+                                    <button
+                                        class="text-white px-2 py-1 bg-indigo-600 rounded text-xs lg:text-sm hover:bg-indigo-500"
+                                        onclick="openEditModal({{ $url->id }})">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        class="text-white px-2 py-1 bg-green-600 rounded text-xs lg:text-sm hover:bg-green-500"
+                                        onclick="openViewModal({{ $url->id }})">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
                                     <button
                                         class="text-white px-2 py-1 bg-red-600 rounded text-xs lg:text-sm hover:bg-red-500"
-                                        onclick="confirmDelete({{ $url->id }})">Delete</button>
+                                        onclick="confirmDelete({{ $url->id }})">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -63,7 +89,8 @@
     <!-- delete modal -->
     <div id="deleteModal"
         class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out opacity-0 transform scale-75">
-        <div class="bg-white rounded-lg shadow-lg w-1/3 p-6 transition-transform duration-300 ease-in-out">
+        <div
+            class="bg-white rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-6 transition-transform duration-300 ease-in-out">
             <h2 class="text-lg font-bold mb-4">Confirm Deletion</h2>
             <p>Are you sure you want to delete this URL?</p>
             <div class="mt-4 flex justify-end">
@@ -71,6 +98,46 @@
                     onclick="closeDeleteModal()">Cancel</button>
                 <button id="confirmDelete" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-md"
                     onclick="">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit modal -->
+    <div id="editModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out opacity-0 transform scale-75">
+        <div
+            class="bg-white rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-6 transition-transform duration-300 ease-in-out">
+            <h2 class="text-lg font-bold mb-4">Edit URL</h2>
+            <form id="editForm" action="{{ route('url.update') }}" method="POST">
+                @csrf
+                @method('POST')
+                <input type="hidden" id="editUrlId" name="id">
+                <div class="mb-4">
+                    <label for="editOriginalUrl" class="block text-gray-700 text-sm font-bold mb-2">Original URL:</label>
+                    <input type="text" id="editOriginalUrl" name="original_url"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button id="cancelEdit" type="button"
+                        class="text-indigo-600 hover:text-indigo-500 px-4 py-2 rounded-md mr-2"
+                        onclick="closeEditModal()">Cancel</button>
+                    <button id="saveEdit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md"
+                        onclick="saveEdit()">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- view modal -->
+    <div id="viewModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out opacity-0 transform scale-75">
+        <div
+            class="bg-white rounded-lg shadow-lg w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-6 transition-transform duration-300 ease-in-out">
+            <h2 class="text-lg font-bold mb-4">View URL</h2>
+            <div id="viewUrlDetails" class="text-gray-700 font-bold mb-2"></div>
+            <div class="mt-2 flex justify-end">
+                <button id="closeView" class="text-indigo-600 hover:text-indigo-500 px-4 rounded-md"
+                    onclick="closeViewModal()">Close</button>
             </div>
         </div>
     </div>
@@ -131,6 +198,84 @@
             }, function(err) {
                 console.error('Failed to copy text: ', err);
             });
+        }
+
+        function openEditModal(urlId) {
+            const modal = document.getElementById('editModal');
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'scale-75');
+            }, 10);
+            document.getElementById('editUrlId').value = urlId;
+
+            fetch(`{{ route('url.show', '') }}/${urlId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('editOriginalUrl').value = data.original_url;
+                });
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.classList.add('opacity-0', 'scale-75');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        }
+
+        function openViewModal(urlId) {
+            const modal = document.getElementById('viewModal');
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'scale-75');
+            }, 10);
+
+            fetch(`{{ route('url.show', '') }}/${urlId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const viewUrlDetails = document.getElementById('viewUrlDetails');
+                    if (data.original_url) {
+                        viewUrlDetails.innerHTML = `
+                        <p class="text-gray-600 mb-2">
+                            Original URL:
+                            <a href="${data.original_url}"
+                                class="text-indigo-600 hover:underline break-all truncate max-w-xs"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="${data.original_url}">
+                                ${data.original_url.length > 30 ? data.original_url.slice(0, 30) + '...' : data.original_url}
+                            </a>
+                        </p>
+                        <p class="text-gray-600 mb-2">
+                            Short URL:
+                            <a href="${data.short_url}"
+                                class="text-indigo-600 hover:underline break-all truncate max-w-xs"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                ${data.short_url}
+                            </a>
+                        </p>
+                        <p class="text-gray-600">
+                            Clicks:
+                            <span class="font-semibold">${data.clicks}</span>
+                        </p>
+                    `;
+                    } else {
+                        viewUrlDetails.innerHTML = `<p class="text-red-600">${data.error}</p>`;
+                    }
+                });
+        }
+
+        function closeViewModal() {
+            const modal = document.getElementById('viewModal');
+            modal.classList.add('opacity-0', 'scale-75');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         }
     </script>
 @endpush

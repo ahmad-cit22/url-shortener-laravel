@@ -16,7 +16,7 @@
 
                 <div class="relative">
                     <button onclick="toggleDropdown()"
-                        class="flex items-center text-indigo-600 font-semibold hover:text-indigo-700 bg-gray-100 px-4 py-2 rounded-lg focus:outline-none">
+                        class="flex items-center text-indigo-600 font-semibold hover:text-indigo-700 bg-gray-100 px-4 py-2 px-3 rounded-lg focus:outline-none">
                         Dashboard
                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -26,11 +26,11 @@
 
                     <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden">
                         <a href="{{ route('dashboard') }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">Dashboard</a>
+                            class="block px-4 py-2 px-3 text-gray-700 hover:bg-gray-100 {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">Dashboard</a>
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
                             <button type="submit"
-                                class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+                                class="w-full text-left px-4 py-2 px-3 text-gray-700 hover:bg-gray-100">Logout</button>
                         </form>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 <a href="{{ route('login') }}"
                     class="text-gray-700 font-medium hover:text-indigo-500 {{ request()->routeIs('login') ? 'text-indigo-600' : '' }}">Login</a>
                 <a href="{{ route('register') }}"
-                    class="font-semibold hover:text-indigo-700 bg-indigo-100 px-4 py-2 rounded-lg {{ request()->routeIs('register') ? 'bg-indigo-500 text-white' : '' }}">Register</a>
+                    class="font-semibold hover:text-indigo-700 bg-indigo-100 px-4 py-2 px-3 rounded-lg {{ request()->routeIs('register') ? 'bg-indigo-500 text-white' : '' }}">Register</a>
             @endguest
         </nav>
     </div>
@@ -48,14 +48,14 @@
     <nav id="mobile-menu" class="hidden lg:hidden bg-white">
         <div class="px-6 py-4 space-y-4">
             <a href="{{ route('home') }}"
-                class="block text-gray-700 font-medium hover:bg-gray-100 p-2 rounded-lg {{ request()->routeIs('home') ? 'bg-gray-100' : '' }}">Home</a>
+                class="block text-gray-700 font-medium hover:bg-gray-100 py-2 px-3 px-3 rounded-lg {{ request()->routeIs('home') ? 'bg-gray-100' : '' }}">Home</a>
             @auth
                 <a href="{{ route('dashboard') }}"
-                    class="block text-indigo-600 font-semibold hover:bg-gray-100 py-2 rounded-lg {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">Dashboard</a>
+                    class="block text-indigo-600 font-semibold hover:bg-gray-100 py-2 px-3 rounded-lg {{ request()->routeIs('dashboard') ? 'bg-gray-100' : '' }}">Dashboard</a>
                 <form method="POST" action="{{ route('logout') }}" class="block">
                     @csrf
                     <button type="submit"
-                        class="w-full text-left text-indigo-600 font-semibold hover:bg-gray-100 py-2 rounded-lg">Logout</button>
+                        class="w-full text-left text-indigo-600 font-semibold hover:bg-gray-100 py-2 px-3 rounded-lg">Logout</button>
                 </form>
             @endauth
             @guest

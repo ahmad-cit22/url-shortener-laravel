@@ -21,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/url/shorten', [UrlController::class, 'shortenApi'])->name('api.url.shorten');
 Route::get('/url/{shortUrl}', [UrlController::class, 'getOriginalUrlApi'])->name('api.url.original');
+Route::post('/url/update', [UrlController::class, 'updateApi'])->name('api.url.update');
 Route::delete('/url/delete/{id}', [UrlController::class, 'deleteApi'])->name('api.url.delete');
 Route::get('/urls', [UrlController::class, 'listUrlsApi'])->name('api.url.list');
