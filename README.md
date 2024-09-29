@@ -11,7 +11,6 @@ A simple URL shortener application built with Laravel and Modern JavaScript. It 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -96,12 +95,32 @@ After the installation, follow these steps to use the application:
 
 - Open your browser and navigate to http://localhost:8000.
 - Click "Shorten URL" to generate a shortened version of a long URL.
+- To store & manage your URLs, you need to register.
 - After registration & login, use the "Dashboard" navigation button to view & manage your URLs.
 - Click "View" button to view the original URL, shortened URL, and click statistics.
 - Click "Edit" button to modify an existing shortened URL.
 - Click "Delete" to remove a shortened URL from the system.
 
 ---
+
+## Testing
+
+This project includes a suite of automated tests to ensure the application functions correctly. You can run the tests using the following command:
+
+    ```bash
+    php artisan test
+
+
+## Test Cases
+
+The following test cases are included in the project:
+
+1. **Any User Can Shorten URL:** Validates that any user can shorten a valid URL.
+2. **Authenticated User Can See Dashboard:** Checks access to the dashboard for authenticated users.
+3. **Authenticated User Can Delete URL:** Verifies that users can delete their own URLs.
+4. **Unauthorized User Cannot Delete URL:** Ensures users cannot delete URLs that don't belong to them.
+5. **Short URL Redirects to Original URL:** Tests that a shortened URL redirects to the original.
+6. **Invalid URL Cannot Be Shortened:** Ensures invalid URLs are not accepted.
 
 ## Contributing
 
