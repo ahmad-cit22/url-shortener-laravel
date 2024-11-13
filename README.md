@@ -108,12 +108,15 @@ After the installation, follow these steps to use the application:
 
 ## Testing
 
-This project includes a suite of automated tests to ensure the application functions correctly. 
-- You can run the tests using the following command:
+This project includes unit tests for the URL shortening functionality, located in `Tests\Unit\UrlShorteningTest`. The tests cover various aspects of the URL shortener to ensure reliable functionality.
+- You can run the test using the following command:
 
     ```bash
-    php artisan test
+    php artisan test --filter UrlShorteningTest
+- To run a specific test method within that class, use:
 
+    ```bash
+    php artisan test --filter any_user_can_shorten_url
 
 ## Test Cases
 
